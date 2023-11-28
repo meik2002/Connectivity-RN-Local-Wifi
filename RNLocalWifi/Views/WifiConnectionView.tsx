@@ -10,10 +10,12 @@ function WifiConnectionView() {
   const [ssid, setSsid] = useState('');
 
   const connectToMlgSsid = (prefix: string) => {
-    WifiManager.connectToSSIDPrefix(prefix).catch(e => {
-      console.error('ConnectToSsidWithPrefix: ', e);
-      setSsid(`connectToMlgSsid - [${prefix}]\n` + JSON.stringify(e));
-    });
+    WifiManager.connectToSSIDPrefix(prefix)
+      .then(() => checkSsid())
+      .catch(e => {
+        console.error('ConnectToSsidWithPrefix: ', JSON.stringify(e));
+        setSsid(`Unable to connect to Ssid starting wiht ${prefix}`);
+      });
   };
 
   const checkSsid = () => {
@@ -32,7 +34,7 @@ function WifiConnectionView() {
   return (
     <View>
       <Button
-        onPress={() => connectToMlgSsid('BriesWorld')}
+        onPress={() => connectToMlgSsid('MLG')}
         title="Connect MLG Ssid!"
       />
       {/* <Text>{ssid}</Text> */}
