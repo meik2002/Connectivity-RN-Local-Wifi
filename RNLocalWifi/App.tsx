@@ -1,25 +1,18 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {Provider} from 'react-redux';
-import {store, useAppDispatch} from './Store/Store';
-import {connectToSsidWithPrefix} from './Features/WifiSlice';
+import {store} from './Store/Store';
+import WifiConnectionView from './Views/WifiConnectionView';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -52,16 +45,11 @@ function Section({children, title}: SectionProps): JSX.Element {
 }
 
 function App(): JSX.Element {
-  const dispatch = useAppDispatch();
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
-  useEffect(() => {
-    dispatch(connectToSsidWithPrefix('MGL'));
-  }, [dispatch]);
 
   return (
     <Provider store={store}>
@@ -73,6 +61,7 @@ function App(): JSX.Element {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={backgroundStyle}>
+          <WifiConnectionView />
           {/* <Header /> */}
           {/* <View
             style={{
